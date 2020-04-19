@@ -1,0 +1,67 @@
+div[groupLesson='0'] {
+    background-color: #F96166;
+    color: #FCE77D
+}
+
+div[groupLesson='1'] {
+    background-color: #FCE77D;
+    color: #F96166;
+}
+
+div[groupLesson='2'] {
+    background-color: #2F2E2A;
+    color: #DF678C;
+}
+
+div[groupLesson='3'] {
+    background-color: #DF678C;
+    color: #2F2E2A;
+}
+
+div[groupLesson='4'] {
+    background-color: #3D155F;
+    color: #CCF381;
+}
+
+div[groupLesson='5'] {
+    background-color: #CCF381;
+    color: #3D155F;
+}
+
+div[groupLesson='6'] {
+    background-color: #4831D4;
+    color: #4A264F;
+}
+
+div[groupLesson='7'] {
+    background-color: #4A264F;
+    color: #4831D4;
+}
+
+div[groupLesson='8'] {
+    background-color: #F0A07C;
+    color: #FFF748;
+}
+
+div[groupLesson='9'] {
+    background-color: #FFF748;
+    color: #F0A07C;
+}
+
+div[groupLesson='10'] {
+    background-color: #3C1A5B;
+    color: #EB4C36;
+}
+
+div[groupLesson='-1'] {
+    background-color: #EB4C36;
+    color: #3C1A5B;
+}
+
+div[groupLesson='xyz'] {
+    background-color: #1D1A1A;
+}
+
+.selectedLesson{
+    background-color: #81e6d9 !important;
+}

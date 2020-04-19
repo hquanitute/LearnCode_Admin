@@ -83,7 +83,9 @@ function CourseInfo(props) {
                 <b>Is published:</b> {publishedButton}
                 <br />
                 <b>Order:</b>
-                <input className="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 mx-2" value={order} onChange={changeOrder} />
+                <input className="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 mx-2" 
+                value={order} onChange={changeOrder} 
+                type="number"/>
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded float-right" onClick={() => editCourse()}>
                     Change
                     </button>

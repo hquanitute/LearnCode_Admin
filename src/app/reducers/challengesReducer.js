@@ -1,8 +1,8 @@
 const initChallenge = []
 const challengesReducer = (state = initChallenge, action) => {
     switch (action.type) {
-        case "SET_COURSES":
-            state = [...state, action.data];
+        case "GET_CHALLENGES":
+            state = action.data;
             break;
         case "xyz":
             state = [...state, "hihi"];

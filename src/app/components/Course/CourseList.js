@@ -34,8 +34,7 @@ function CourseList(props) {
     const resetBackground = () => {
         setItemSelected("")
     }
-    const selectCourse = (course) => {
-        console.log("Hello")
+    const selectCourse = (e,course) => {
         props.setCourseSelected(course)
         props.updateCourseSelected(course._id)
     }
@@ -71,7 +70,7 @@ function CourseList(props) {
                         <div key={course.name} className={course._id === itemSeleected ? "bg-teal-300" : "bg-white"}
                             onMouseLeave={resetBackground}
                             onMouseEnter={changeBackground}
-                            onClick={() => selectCourse(course)}>
+                            onClick={(e) => selectCourse(e,course)}>
                             <div className="text-left p-2" item={course._id}>
                                 <b>Course name:  </b> {course.name} <br />
                                 <b>Order:        </b> {course.order} <br />
