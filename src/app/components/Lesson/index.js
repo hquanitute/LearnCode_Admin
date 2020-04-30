@@ -207,7 +207,7 @@ function LessonComponent(props) {
                         listLessonComponent
                     }
                 </div>
-                <div>Choose a lesson</div>
+                <div className="col-span-7">Choose a lesson</div>
             </div>
         )
     }    
