@@ -1,5 +1,5 @@
 import axios from "axios";
-export const api_base ="127.0.0.1:5000/api/"
+export const api_base ="https://learn-server-api.herokuapp.com/api/"
 
 const call = axios.create({
   headers: {

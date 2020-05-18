@@ -3,7 +3,7 @@ import { getAllChallenge } from '../../actions/challengesAction';
 import { connect } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
 import './style.css';
-import { callApiAsPromise } from '../../api';
+import { callApiAsPromise, api_base } from '../../api';
 
 const ReactMarkdown = require('react-markdown')
 
@@ -50,13 +50,13 @@ function ChallengeComponent(props) {
         setSolution(challengeSelected.solutions)
     }, [challengeSelected])
     const addChallenge = () => {
-        callApiAsPromise("post", 'http://localhost:5000/api/challenges/', null, JSON.stringify({ "title": "Change challenge name", "challengeOrder": -1, "isPublished": "false", "isRequired": "true" })).then(() => {
+        callApiAsPromise("post", api_base+'challenges/', null, JSON.stringify({ "title": "Change challenge name", "challengeOrder": -1, "isPublished": "false", "isRequired": "true" })).then(() => {
             props.getChallenges();
             alert("Add new challenge successfully. Please edit infor for new challenge")
         })
     }
     const deleteChallenge = () => {
-        callApiAsPromise("delete", 'http://localhost:5000/api/challenges/' + challengeSelected._id, null, null).then(() => {
+        callApiAsPromise("delete", api_base+'challenges/' + challengeSelected._id, null, null).then(() => {
             props.getChallenges();
             setChallengeSelected({})
             alert("deleted selected challenge successfully.")
@@ -101,7 +101,7 @@ function ChallengeComponent(props) {
 
     const changeChallengeButton = () => {
         
-        callApiAsPromise("put", 'http://localhost:5000/api/challenges/' + challengeSelected._id, null,
+        callApiAsPromise("put", api_base+'challenges/' + challengeSelected._id, null,
             JSON.stringify(
                 {
                     "title": title,

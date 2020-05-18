@@ -1,7 +1,7 @@
-import { callApiAsPromise } from "../api";
+import { callApiAsPromise, api_base } from "../api";
 
 export function getLessons() {
-    const request = callApiAsPromise("GET", "http://127.0.0.1:5000/api/lessons", null, null)
+    const request = callApiAsPromise("GET", api_base+"lessons", null, null)
     return dispatch =>
         request.then(response =>
             dispatch({

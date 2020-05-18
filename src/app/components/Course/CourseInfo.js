@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import Search from 'antd/lib/input/Search';
 import { getLessons } from '../../actions/lessonsAction';
 import { updateCourseSelectedAction, updateCourseAction } from '../../actions/coursesAction';
-import { callApiAsPromise } from '../../api';
+import { callApiAsPromise, api_base } from '../../api';
 
 function CourseInfo(props) {
     const [searchText,setSearch] = useState("");
 
     const editCourse = () => {
-        callApiAsPromise("put", 'http://localhost:5000/api/courses/' + props.courseSelected._id, null, JSON.stringify({ "name": rename, "dashName": rename, "order": order, "isPublished": published.toString() })).then(() => {
+        callApiAsPromise("put", api_base+'courses/' + props.courseSelected._id, null, JSON.stringify({ "name": rename, "dashName": rename, "order": order, "isPublished": published.toString() })).then(() => {
             props.updateCourseSelected(props.courseSelected._id)
             props.updateCourse();
             alert("Edited successfully")
@@ -20,7 +20,7 @@ function CourseInfo(props) {
             console.log("null");
             return
         }
-        callApiAsPromise("put", 'http://localhost:5000/api/courses/' + props.courseSelected._id + '/add', null, JSON.stringify({ "lesson": lesson._id })).then(() => {
+        callApiAsPromise("put", api_base+'courses/' + props.courseSelected._id + '/add', null, JSON.stringify({ "lesson": lesson._id })).then(() => {
             props.updateCourseSelected(props.courseSelected._id)
         })
 
@@ -31,7 +31,7 @@ function CourseInfo(props) {
             console.log("null");
             return
         }
-        callApiAsPromise("put", 'http://localhost:5000/api/courses/' + props.courseSelected._id + '/remove', null, JSON.stringify({ "lesson": lessonId })).then(() => {
+        callApiAsPromise("put", api_base+'courses/' + props.courseSelected._id + '/remove', null, JSON.stringify({ "lesson": lessonId })).then(() => {
             props.updateCourseSelected(props.courseSelected._id)
         })
 

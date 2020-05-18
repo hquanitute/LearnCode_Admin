@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { setCourseSelectedAction, updateCourseSelectedAction, setCourses, updateCourseAction, resetCourseSelectedAction } from '../../actions/coursesAction'
-import { callApiAsPromise } from '../../api';
+import { callApiAsPromise, api_base } from '../../api';
 
 function CourseList(props) {
     const [itemSeleected, setItemSelected] = useState("")
     const [courses, setCourses] = useState([]);
 
     useEffect(() => {
-        callApiAsPromise("GET", "http://127.0.0.1:5000/api/courses?sort=order", null, null).then((val, err) => {
+        callApiAsPromise("GET", api_base+"courses?sort=order", null, null).then((val, err) => {
             if (err) {
                 console.log(err);
             } else {
@@ -20,7 +20,7 @@ function CourseList(props) {
     }, [])
 
     useEffect(() => {
-        callApiAsPromise("GET", "http://127.0.0.1:5000/api/courses?sort=order", null, null).then((val, err) => {
+        callApiAsPromise("GET", api_base+"courses?sort=order", null, null).then((val, err) => {
             if (err) {
                 console.log(err);
             } else {
@@ -39,13 +39,13 @@ function CourseList(props) {
         props.updateCourseSelected(course._id)
     }
     const addCourse = () => {
-        callApiAsPromise("post", 'http://localhost:5000/api/courses/', null, JSON.stringify({ "name": "Change Course name", "dashName": "sample name", "order": 0, "isPublished": "false" })).then(() => {
+        callApiAsPromise("post", api_base+'courses/', null, JSON.stringify({ "name": "Change Course name", "dashName": "sample name", "order": 0, "isPublished": "false" })).then(() => {
             props.updateCourse();
             alert("Add new course successfully. Please edit infor for new course")
         })
     }
     const deleteCourse = () => {
-        callApiAsPromise("delete", 'http://localhost:5000/api/courses/' + props.courseSelected._id, null, null).then(() => {
+        callApiAsPromise("delete", api_base+'courses/' + props.courseSelected._id, null, null).then(() => {
             props.updateCourse();
             props.resetCourseSelected();
             alert("deleted selected course successfully.")

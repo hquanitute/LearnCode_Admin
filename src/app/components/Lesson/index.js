@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { updateCourseAction, setCourses } from "../../actions/coursesAction";
 import { getLessons } from "../../actions/lessonsAction";
-import { callApiAsPromise } from "../../api";
+import { callApiAsPromise, api_base } from "../../api";
 import "./style.css";
 import { getAllChallenge } from "../../actions/challengesAction";
 function LessonComponent(props) {
@@ -55,13 +55,13 @@ function LessonComponent(props) {
     }, [lessonSelected])
 
     const addLesson = () => {
-        callApiAsPromise("post", 'http://localhost:5000/api/lessons/', null, JSON.stringify({ "name": "Change Lesson name", "dashName": "sample name", "order": -1, "isPublished": "false" })).then(() => {
+        callApiAsPromise("post", api_base+'lessons/', null, JSON.stringify({ "name": "Change Lesson name", "dashName": "sample name", "order": -1, "isPublished": "false" })).then(() => {
             props.updateLessons();
             alert("Add new lesson successfully. Please edit infor for new lesson")
         })
     }
     const deleteLesson = () => {
-        callApiAsPromise("delete", 'http://localhost:5000/api/lessons/' + lessonSelected._id, null, null).then(() => {
+        callApiAsPromise("delete", api_base+'lessons/' + lessonSelected._id, null, null).then(() => {
             props.updateLessons();
             setLessonSelected({})
             alert("deleted selected course successfully.")
@@ -121,7 +121,7 @@ function LessonComponent(props) {
 
     ))
     const changeLessonButton = () => {
-        callApiAsPromise("put", 'http://localhost:5000/api/lessons/' + lessonSelected._id, null, JSON.stringify({ "name": name, "dashName": name, "order": order, "isPublished": published.toString() })).then(() => {
+        callApiAsPromise("put", api_base+'lessons/' + lessonSelected._id, null, JSON.stringify({ "name": name, "dashName": name, "order": order, "isPublished": published.toString() })).then(() => {
             props.updateLessons();
             setIsEdit(false);
             forceUpdate(x=>!x)
@@ -153,7 +153,7 @@ function LessonComponent(props) {
             console.log("null");
             return
         }
-        callApiAsPromise("put", 'http://localhost:5000/api/lessons/' + lessonSelected._id + '/add', null, JSON.stringify({ "challenge": challenge._id })).then(() => {
+        callApiAsPromise("put", api_base+'lessons/' + lessonSelected._id + '/add', null, JSON.stringify({ "challenge": challenge._id })).then(() => {
             lessonSelected.challenges.push(challenge)
             forceUpdate(x=>!x)
             console.log(lessonSelected.challenges);
@@ -166,7 +166,7 @@ function LessonComponent(props) {
             console.log("null");
             return
         }
-        callApiAsPromise("put", 'http://localhost:5000/api/lessons/' + lessonSelected._id + '/remove', null, JSON.stringify({ "challenge": challengeId })).then(() => {
+        callApiAsPromise("put", api_base+'lessons/' + lessonSelected._id + '/remove', null, JSON.stringify({ "challenge": challengeId })).then(() => {
             lessonSelected.challenges=lessonSelected.challenges.filter((x)=>{
                 return x._id !==challengeId
             })

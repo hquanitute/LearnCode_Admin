@@ -1,4 +1,4 @@
-import { callApiAsPromise } from "../api";
+import { callApiAsPromise, api_base } from "../api";
 
 export function setCourses(courses){
     return {
@@ -15,7 +15,7 @@ export function setCourseSelectedAction(course){
 }
 
 export function updateCourseSelectedAction(courseID){
-    const request = callApiAsPromise("GET", "http://127.0.0.1:5000/api/courses/" +courseID, null, null)
+    const request = callApiAsPromise("GET", api_base+ "courses/" +courseID, null, null)
     return dispatch =>
         request.then(response =>
             dispatch({
@@ -32,7 +32,7 @@ export function resetCourseSelectedAction(){
 }
 
 export function updateCourseAction(){
-    const request = callApiAsPromise("GET", "http://127.0.0.1:5000/api/courses/", null, null)
+    const request = callApiAsPromise("GET", api_base+"courses/", null, null)
     return dispatch =>
         request.then(response =>
             dispatch({
