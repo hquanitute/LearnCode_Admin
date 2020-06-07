@@ -28,6 +28,8 @@ function ChallengeComponent(props) {
     const [tests, setTests] = useState("")
     const [content, setContent] = useState("")
     const [solutions, setSolution] = useState("")
+    const [runResult, setRunResult] = useState("")
+
     useEffect(() => {
         props.getChallenges();
     }, [])
@@ -48,15 +50,16 @@ function ChallengeComponent(props) {
         setTests(challengeSelected.tests)
         setContent(challengeSelected.contents)
         setSolution(challengeSelected.solutions)
+        setRunResult(challengeSelected.runResult)
     }, [challengeSelected])
     const addChallenge = () => {
-        callApiAsPromise("post", api_base+'challenges/', null, JSON.stringify({ "title": "Change challenge name", "challengeOrder": -1, "isPublished": "false", "isRequired": "true" })).then(() => {
+        callApiAsPromise("post", api_base + 'challenges/', null, JSON.stringify({ "title": "Change challenge name", "challengeOrder": -1, "isPublished": "false", "isRequired": "true" })).then(() => {
             props.getChallenges();
             alert("Add new challenge successfully. Please edit infor for new challenge")
         })
     }
     const deleteChallenge = () => {
-        callApiAsPromise("delete", api_base+'challenges/' + challengeSelected._id, null, null).then(() => {
+        callApiAsPromise("delete", api_base + 'challenges/' + challengeSelected._id, null, null).then(() => {
             props.getChallenges();
             setChallengeSelected({})
             alert("deleted selected challenge successfully.")
@@ -95,13 +98,14 @@ function ChallengeComponent(props) {
         setTests(challengeSelected.tests)
         setContent(challengeSelected.contents)
         setSolution(challengeSelected.solutions)
+        setRunResult(challengeSelected.runResult)
 
         setIsEdit(!isEdit)
     }
 
     const changeChallengeButton = () => {
-        
-        callApiAsPromise("put", api_base+'challenges/' + challengeSelected._id, null,
+
+        callApiAsPromise("put", api_base + 'challenges/' + challengeSelected._id, null,
             JSON.stringify(
                 {
                     "title": title,
@@ -117,18 +121,46 @@ function ChallengeComponent(props) {
                     "instructions": instructions,
                     "tests": tests,
                     "contents": content,
-                    "solutions":solutions
+                    "solutions": solutions,
+                    "runResult": runResult
                 })).then((response) => {
                     props.getChallenges();
                     setIsEdit(false);
                     console.log(response.data.challenge);
-                    
+
                     // forceUpdate(x=>!x)
                     setChallengeSelected(response.data.challenge)
                     alert("Edited successfully")
                 })
     }
 
+    const generateRunResult = () => {
+        let language = "";
+        if(challengeType >-1 && challengeType <100){
+            language = "NodejsTest"
+        } else if (challengeType >=100 && challengeType <200){
+            language = "Java"
+        }
+        callApiAsPromise("post", "http://104.248.148.136:8080/itcodeweb-0.0.1-SNAPSHOT/code", null, JSON.stringify({
+            "codeSubmit": {
+                "code": tests+" "+ solutions
+            },
+            "language": language,
+            "test": {
+                "code": "string"
+            }
+        })).then((response) => {
+            console.log(response.data);
+            if(response.data.errorMessage.errorComplieMessage){
+                alert("Generate failed")
+                return
+            } else {
+                setRunResult(response.data.successMessage.successComplieMessage);
+            }
+            // forceUpdate(x=>!x)
+            
+        })
+    }
     let editButton = isEdit ?
         (<div className="grid grid-cols-7 gap-2 mx-2 my-2">
             <button className="cols-span-1 col-start-6 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
@@ -245,10 +277,10 @@ function ChallengeComponent(props) {
                 <div className="afterTest grid grid-cols-6">
                     <b className="col-span-6">AfterTest</b>
                     <div className="markdown-block col-span-3">
-                        <TextareaAutosize readOnly={isEdit ? false : true} 
-                        className="w-full p-4" 
-                        value={afterTest} 
-                        onChange={(e)=>setAfterTest(e.target.value)}/>
+                        <TextareaAutosize readOnly={isEdit ? false : true}
+                            className="w-full p-4"
+                            value={afterTest}
+                            onChange={(e) => setAfterTest(e.target.value)} />
                     </div>
                     <div className="previous col-span-3">
                         <ReactMarkdown source={afterTest} escapeHtml={false} />
@@ -258,10 +290,10 @@ function ChallengeComponent(props) {
                 <div className="description grid grid-cols-6">
                     <b className="col-span-6">Description</b>
                     <div className="markdown-block col-span-3">
-                        <TextareaAutosize readOnly={isEdit ? false : true} 
-                            className="w-full p-4" 
-                            value={description} 
-                            onChange={(e)=>setDescription(e.target.value)}/>
+                        <TextareaAutosize readOnly={isEdit ? false : true}
+                            className="w-full p-4"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)} />
                     </div>
                     <div className="previous col-span-3">
                         <ReactMarkdown source={description} escapeHtml={false} />
@@ -271,10 +303,10 @@ function ChallengeComponent(props) {
                 <div className="instructions grid grid-cols-6">
                     <b className="col-span-6">Instructions</b>
                     <div className="markdown-block col-span-3">
-                        <TextareaAutosize readOnly={isEdit ? false : true} 
-                        className="w-full p-4" 
-                        value={instructions} 
-                        onChange={(e) =>setInstructions(e.target.value)}/>
+                        <TextareaAutosize readOnly={isEdit ? false : true}
+                            className="w-full p-4"
+                            value={instructions}
+                            onChange={(e) => setInstructions(e.target.value)} />
                     </div>
                     <div className="previous col-span-3">
                         <ReactMarkdown source={instructions} escapeHtml={false} />
@@ -284,10 +316,10 @@ function ChallengeComponent(props) {
                 <div className="tests grid grid-cols-6">
                     <b className="col-span-6">Tests</b>
                     <div className="markdown-block col-span-3">
-                        <TextareaAutosize readOnly={isEdit ? false : true} 
-                        className="w-full p-4" 
-                        value={tests} 
-                        onChange={(e) =>setTests(e.target.value)}/>
+                        <TextareaAutosize readOnly={isEdit ? false : true}
+                            className="w-full p-4"
+                            value={tests}
+                            onChange={(e) => setTests(e.target.value)} />
                     </div>
                     <div className="previous col-span-3">
                         <ReactMarkdown source={tests} escapeHtml={false} />
@@ -297,13 +329,31 @@ function ChallengeComponent(props) {
                 <div className="content grid grid-cols-6">
                     <b className="col-span-6">Content</b>
                     <div className="markdown-block col-span-3">
-                        <TextareaAutosize readOnly={isEdit ? false : true} 
-                        className="w-full p-4" 
-                        value={content} 
-                        onChange={(e) =>setContent(e.target.value)}/>
+                        <TextareaAutosize readOnly={isEdit ? false : true}
+                            className="w-full p-4"
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)} />
                     </div>
                     <div className="previous col-span-3">
                         <ReactMarkdown source={content} escapeHtml={false} />
+                    </div>
+                </div>
+                <hr></hr>
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" 
+                    onClick={() => generateRunResult()}
+                    disabled ={isEdit ? false : true}>
+                        Generate Result Console
+                </button>
+                <div className="reunResult grid grid-cols-6">
+                    <b className="col-span-6">Run Result</b>
+                    <div className="markdown-block col-span-3">
+                        <TextareaAutosize readOnly={isEdit ? false : true}
+                            className="w-full p-4"
+                            value={runResult}
+                            onChange={(e) => setRunResult(e.target.value)} />
+                    </div>
+                    <div className="previous col-span-3">
+                        <ReactMarkdown source={runResult} escapeHtml={false} />
                     </div>
                 </div>
                 <hr></hr>
