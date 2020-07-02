@@ -249,8 +249,7 @@ function ChallengeComponent(props) {
                     <input className="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4"
                         value={forumTopicId}
                         onChange={(e) => setForumTopicId(e.target.value)}
-                        readOnly={isEdit ? false : true}
-                        type="number" />
+                        readOnly={isEdit ? false : true}/>
                 </div>
                 <br />
                 <div className="mx-2 my-2 grid grid-cols-10">
