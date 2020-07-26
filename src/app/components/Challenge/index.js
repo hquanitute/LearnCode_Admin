@@ -136,22 +136,29 @@ function ChallengeComponent(props) {
 
     const generateRunResult = () => {
         let language = "";
-        if(challengeType >-1 && challengeType <100){
+        let codeSubmit = "";
+        let testString = "";
+        if (challengeType > -1 && challengeType < 100) {
             language = "NodejsTest"
-        } else if (challengeType >=100 && challengeType <200){
-            language = "JavaTest"
-        } else if (challengeType >=200 && challengeType <300){
-            language = "Python2"
+            codeSubmit = "const codeSubmit = ` "+ solutions.replace(/\n+/g, ' ') + " ` ; " + tests + " " + solutions
+        } else if (challengeType >= 100 && challengeType < 200) {
+            language = "JavaTest";
+            testString = tests;
+            codeSubmit = solutions
+        } else if (challengeType >= 200 && challengeType < 300) {
+            language = "Python2";
+            codeSubmit = solutions
         }
-        callApiAsPromise("post", process.env.REACT_APP_COMPILE_SERVER2 + "code", null, JSON.stringify({
+        let data = {
             "codeSubmit": {
-                "code": language === 'NodejsTest' ? tests+" "+ solutions : language === 'Python2' ? tests : solutions //java is last one
+                "code": codeSubmit
             },
             "language": language,
             "test": {
-                "code": tests
+                "code": testString
             }
-        })).then((response) => {
+        }
+        callApiAsPromise("post", process.env.REACT_APP_COMPILE_SERVER2 + "code", null, JSON.stringify(data)).then((response) => {
             console.log(response.data);
             if(response.data.errorMessage.errorComplieMessage){
                 alert("response.data.errorMessage.errorComplieMessage")
