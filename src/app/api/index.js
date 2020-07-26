@@ -1,5 +1,5 @@
 import axios from "axios";
-export const api_base ="https://learn-server-api.herokuapp.com/api/"
+export const api_base =process.env.REACT_APP_APIBASE2_URL;
 
 const call = axios.create({
   headers: {

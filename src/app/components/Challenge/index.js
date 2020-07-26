@@ -139,20 +139,23 @@ function ChallengeComponent(props) {
         if(challengeType >-1 && challengeType <100){
             language = "NodejsTest"
         } else if (challengeType >=100 && challengeType <200){
-            language = "Java"
+            language = "JavaTest"
+        } else if (challengeType >=200 && challengeType <300){
+            language = "Python2"
         }
-        callApiAsPromise("post", "http://104.248.148.136:8080/itcodeweb-0.0.1-SNAPSHOT/code", null, JSON.stringify({
+        callApiAsPromise("post", process.env.REACT_APP_COMPILE_SERVER2 + "code", null, JSON.stringify({
             "codeSubmit": {
-                "code": tests+" "+ solutions
+                "code": language === 'NodejsTest' ? tests+" "+ solutions : language === 'Python2' ? tests : solutions //java is last one
             },
             "language": language,
             "test": {
-                "code": "string"
+                "code": tests
             }
         })).then((response) => {
             console.log(response.data);
             if(response.data.errorMessage.errorComplieMessage){
-                alert("Generate failed")
+                alert("response.data.errorMessage.errorComplieMessage")
+                setRunResult(response.data.successMessage.successComplieMessage);                
                 return
             } else {
                 setRunResult(response.data.successMessage.successComplieMessage);
